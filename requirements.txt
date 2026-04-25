@@ -1,0 +1,49 @@
+# HTTP & async
+httpx[asyncio]==0.27.*
+tenacity==8.*
+
+# Database
+sqlalchemy[asyncio]==2.0.*
+asyncpg==0.29.*
+alembic==1.13.*
+psycopg2-binary==2.9.*
+
+# Time-series / analytics
+duckdb==0.10.*
+pandas==2.2.*
+numpy==1.26.*
+
+# Vector store
+pgvector==0.3.*
+
+# XBRL / SEC
+python-dateutil==2.9.*
+
+# Job queue
+arq==0.26.*
+redis==5.0.*
+
+# LLM / AI
+pydantic-ai>=0.0.14,<0.1.0
+pydantic==2.7.*
+pydantic-settings==2.*
+openai==1.30.*
+anthropic==0.28.*
+
+# Embeddings
+sentence-transformers==3.0.*
+
+# API
+fastapi==0.111.*
+uvicorn[standard]==0.30.*
+
+# Utilities
+python-dotenv==1.0.*
+structlog==24.*
+rich==13.*
+typer==0.12.*
+
+# Testing
+pytest==8.*
+pytest-asyncio==0.23.*
+respx==0.21.*

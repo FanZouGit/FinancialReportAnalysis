@@ -1,0 +1,38 @@
+version: "3.9"
+
+services:
+  db:
+    image: timescale/timescaledb-ha:pg16-latest
+    environment:
+      POSTGRES_USER: edgar
+      POSTGRES_PASSWORD: edgar
+      POSTGRES_DB: edgar_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U edgar -d edgar_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redisdata:/data
+
+  # Optional: Qdrant vector store (alternative to pgvector)
+  # qdrant:
+  #   image: qdrant/qdrant:latest
+  #   ports:
+  #     - "6333:6333"
+  #   volumes:
+  #     - qdrantdata:/qdrant/storage
+
+volumes:
+  pgdata:
+  redisdata:
+  # qdrantdata:
