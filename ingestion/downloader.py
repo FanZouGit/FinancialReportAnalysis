@@ -234,9 +234,12 @@ class FilingDownloader:
         if not fact_rows:
             return 0
 
-        await self.session.execute(
-            pg_insert(RawFact).values(fact_rows).on_conflict_do_nothing()
-        )
+        # asyncpg caps query parameters at 32767; RawFact has 11 columns → max 2978 rows/batch
+        batch_size = 2000
+        for i in range(0, len(fact_rows), batch_size):
+            await self.session.execute(
+                pg_insert(RawFact).values(fact_rows[i:i + batch_size]).on_conflict_do_nothing()
+            )
 
         for f in filings:
             f.status = "extracted"
