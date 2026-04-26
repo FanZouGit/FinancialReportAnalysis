@@ -48,9 +48,9 @@ class Company(Base):
     state_of_inc: Mapped[Optional[str]] = mapped_column(String(4))
     is_sp500: Mapped[bool] = mapped_column(Boolean, default=False)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
-    created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
     updated_at: Mapped[datetime] = mapped_column(
-        DateTime, server_default=func.now(), onupdate=func.now()
+        DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
     )
 
     filings: Mapped[list["Filing"]] = relationship(back_populates="company")
@@ -85,8 +85,8 @@ class Filing(Base):
     status: Mapped[str] = mapped_column(String(20), default="pending")
     error_message: Mapped[Optional[str]] = mapped_column(Text)
     raw_json_path: Mapped[Optional[str]] = mapped_column(String(500))    # local cache path
-    processed_at: Mapped[Optional[datetime]] = mapped_column(DateTime)
-    created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
+    processed_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True))
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
     company: Mapped["Company"] = relationship(back_populates="filings")
     raw_facts: Mapped[list["RawFact"]] = relationship(back_populates="filing")
@@ -174,7 +174,7 @@ class Metric(Base):
     capex: Mapped[Optional[float]] = mapped_column(Float)
     free_cash_flow: Mapped[Optional[float]] = mapped_column(Float)   # derived
 
-    created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
     company: Mapped["Company"] = relationship(back_populates="metrics")
     filing: Mapped["Filing"] = relationship(back_populates="metrics")
@@ -218,7 +218,7 @@ class Ratio(Base):
     fcf_margin: Mapped[Optional[float]] = mapped_column(Float)         # fcf / revenue
     fcf_conversion: Mapped[Optional[float]] = mapped_column(Float)     # fcf / net_income
 
-    created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
     metric: Mapped["Metric"] = relationship(back_populates="ratio")
 
@@ -268,7 +268,7 @@ class MdaChunk(Base):
     char_start: Mapped[int] = mapped_column(Integer)
     char_end: Mapped[int] = mapped_column(Integer)
     token_count: Mapped[Optional[int]] = mapped_column(Integer)
-    created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
     filing: Mapped["Filing"] = relationship(back_populates="mda_chunks")
     embedding: Mapped[Optional["ChunkEmbedding"]] = relationship(
